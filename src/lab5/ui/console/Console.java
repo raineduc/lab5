@@ -4,6 +4,7 @@ import lab5.lib.Command;
 import lab5.lib.ValidationException;
 import lab5.storage.Flat;
 import lab5.storage.FlatStorage;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -28,6 +29,8 @@ public class Console {
         this.executeCommand(parser.parse(currentLine));
       } catch (IllegalStateException e) {
         break;
+      } catch (ValidationException e) {
+        show(e.getMessage());
       }
     }
   }
@@ -50,14 +53,11 @@ public class Console {
 
   }
 
-  public void executeCommand(Map.Entry<MnemonicDefinition, Command> commandEntry) {
+  public void executeCommand(@NotNull Map.Entry<MnemonicDefinition, Command> commandEntry) {
     Command command = commandEntry.getValue();
     MnemonicDefinition definition = commandEntry.getKey();
 
     try {
-      if (command == null) {
-        throw new ValidationException("Такой команды не существует");
-      }
       command.execute();
       history.push(definition.getMnemonic());
     } catch (ValidationException e) {

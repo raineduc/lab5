@@ -1,7 +1,6 @@
 package lab5.storage;
 
 import lab5.lib.ValidationException;
-import lab5.utils.RandomIntegerGenerator;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -77,7 +76,7 @@ public class FlatStorage {
     return sum;
   }
 
-  public List<Flat> getAllDescending() {
+  public Collection<Flat> getAllDescending() {
     return storage.values().stream()
             .sorted(Comparator.reverseOrder())
             .collect(Collectors.toList());

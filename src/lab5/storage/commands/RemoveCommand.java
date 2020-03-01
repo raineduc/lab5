@@ -3,6 +3,7 @@ package lab5.storage.commands;
 import lab5.lib.Command;
 import lab5.lib.ValidationException;
 import lab5.storage.FlatStorage;
+import lab5.storage.FlatValidator;
 
 public class RemoveCommand implements Command {
   private int id;
@@ -15,6 +16,7 @@ public class RemoveCommand implements Command {
 
   @Override
   public void execute() throws ValidationException, NullPointerException {
+    FlatValidator.validateID(id);
     storage.removeFlat(id);
   }
 

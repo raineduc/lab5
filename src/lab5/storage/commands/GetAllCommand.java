@@ -12,6 +12,7 @@ public class GetAllCommand implements Command {
   private FlatStorage storage;
   private Invoker<Collection<Flat>> invoker;
   private static String info = "Получить все элементы коллекции";
+  private boolean isDescending;
   public GetAllCommand(FlatStorage storage) {
     this.storage = storage;
   }
@@ -19,10 +20,17 @@ public class GetAllCommand implements Command {
   public GetAllCommand(FlatStorage storage, Invoker<Collection<Flat>> invoker) {
     this.storage = storage;
     this.invoker = invoker;
+    this.isDescending = false;
+  }
+
+  public GetAllCommand(FlatStorage storage, Invoker<Collection<Flat>> invoker, boolean isDescending) {
+    this.storage = storage;
+    this.invoker = invoker;
+    this.isDescending = isDescending;
   }
 
   public void execute() throws ValidationException, NullPointerException {
-    Collection<Flat> flats = storage.getAll();
+    Collection<Flat> flats = isDescending ? storage.getAllDescending() : storage.getAll();
     invoker.receive(flats);
   }
 
