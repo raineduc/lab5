@@ -56,4 +56,10 @@ public class FlatValidator {
       throw new NullPointerException("House must not be null");
     }
   }
+
+  public static void validateID(int id) throws ValidationException {
+    if (id < 0) {
+      throw new ValidationException("id must be positive");
+    }
+  }
 }
