@@ -16,6 +16,6 @@ public class CommandHistory {
   }
 
   public String[] getLastCommands(int number) {
-    return Arrays.copyOfRange(commandStack.toArray(String[]::new), 0, number);
+    return Arrays.copyOfRange(commandStack.toArray(String[]::new), 0, commandStack.size() >= number ? number : 0);
   }
 }
