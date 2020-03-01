@@ -1,4 +1,4 @@
-package lab5.manager;
+package lab5.ui.console;
 
 import lab5.lib.Command;
 
@@ -6,17 +6,16 @@ import java.util.Arrays;
 import java.util.Stack;
 
 public class CommandHistory {
-  private Stack<Command> commandStack = new Stack<>();
+  private Stack<String> commandStack = new Stack<>();
 
-  public void push(Command command) {
+  public void push(String command) {
     commandStack.push(command);
   }
-  public Command pop() {
+  public String pop() {
     return commandStack.pop();
   }
 
-  public Command[] getLastCommands(int number) {
-    Command[] commands = new Command[number];
-    return Arrays.copyOfRange(commandStack.toArray(n -> new Command[n]), 0, number);
+  public String[] getLastCommands(int number) {
+    return Arrays.copyOfRange(commandStack.toArray(String[]::new), 0, number);
   }
 }

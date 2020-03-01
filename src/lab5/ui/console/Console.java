@@ -6,13 +6,11 @@ import lab5.storage.Flat;
 import lab5.storage.FlatStorage;
 
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Console {
   private Scanner scanner = new Scanner(System.in);
+  private CommandHistory history = new CommandHistory();
   private HashMap<String, String> availableCommands = new HashMap<>();
   private FlatStorage storage;
   private CommandParser parser;
@@ -27,8 +25,7 @@ public class Console {
     while (true) {
       try {
         String currentLine = scanner.nextLine();
-        Command parsedCommand = parser.parse(currentLine);
-        this.executeCommand(parsedCommand);
+        this.executeCommand(parser.parse(currentLine));
       } catch (IllegalStateException e) {
         break;
       }
@@ -53,17 +50,25 @@ public class Console {
 
   }
 
-  public void executeCommand(Command command) {
+  public void executeCommand(Map.Entry<MnemonicDefinition, Command> commandEntry) {
+    Command command = commandEntry.getValue();
+    MnemonicDefinition definition = commandEntry.getKey();
+
     try {
       if (command == null) {
         throw new ValidationException("Такой команды не существует");
       }
       command.execute();
+      history.push(definition.getMnemonic());
     } catch (ValidationException e) {
       this.show(e.getMessage());
     } catch (NullPointerException e) {
       this.show(e.getMessage());
     }
+  }
+
+  public String[] getLastCommands() {
+    return history.getLastCommands(7);
   }
 
   public void executeScript(Path filename) {
