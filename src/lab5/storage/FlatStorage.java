@@ -76,7 +76,7 @@ public class FlatStorage {
     return sum;
   }
 
-  public List<Flat> getAllDescending() {
+  public Collection<Flat> getAllDescending() {
     return storage.values().stream()
             .sorted(Comparator.reverseOrder())
             .collect(Collectors.toList());
