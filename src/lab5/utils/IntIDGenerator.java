@@ -8,6 +8,7 @@ public class IntIDGenerator implements IDGenerator<Integer> {
 
   public IntIDGenerator() {
     blackList = new ArrayList<>();
+    blackList.add(0);
   }
 
   public IntIDGenerator(ArrayList<Integer> blackList) {
