@@ -18,11 +18,16 @@ public class IntIDGenerator implements IDGenerator<Integer> {
     blackList.add(id);
   }
 
+  public Integer realAbs(Integer value) {
+    return value & Integer.MAX_VALUE;
+  }
+
   public Integer generate() {
     Integer generated = null;
     Random generator = new Random();
 
-    do generated = generator.nextInt(); while (blackList.contains(generated));
+    do generated = realAbs(generator.nextInt()); while (blackList.contains(generated));
+    blackList.add(generated);
     return generated;
   }
 }
