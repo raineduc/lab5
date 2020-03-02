@@ -4,6 +4,7 @@ import lab5.lib.ValidationException;
 import lab5.lib.Validator;
 
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ConsoleTypeReader {
@@ -15,7 +16,7 @@ public class ConsoleTypeReader {
     this.scanner = scanner;
   }
 
-  public int readInteger(Validator<ValidationException, Integer> validator, String varName) throws ValidationException {
+  public int readInteger(Validator<ValidationException, Integer> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       int value = scanner.nextInt();
       validator.validate(value);
@@ -27,7 +28,7 @@ public class ConsoleTypeReader {
     }
   }
 
-  public double readDouble(Validator<ValidationException, Double> validator, String varName) throws ValidationException {
+  public double readDouble(Validator<ValidationException, Double> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       double value = scanner.nextDouble();
       validator.validate(value);
@@ -39,7 +40,7 @@ public class ConsoleTypeReader {
     }
   }
 
-  public boolean readBoolean(Validator<ValidationException, Boolean> validator, String varName) throws ValidationException, InputMismatchException {
+  public boolean readBoolean(Validator<ValidationException, Boolean> validator, String varName) throws ValidationException, InputMismatchException, NoSuchElementException {
     try {
       boolean value = scanner.nextBoolean();
       validator.validate(value);
@@ -51,7 +52,7 @@ public class ConsoleTypeReader {
     }
   }
 
-  public String readString(Validator<ValidationException, String> validator, String varName) throws ValidationException {
+  public String readString(Validator<ValidationException, String> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       String value = scanner.nextLine();
       validator.validate(value);
@@ -62,7 +63,7 @@ public class ConsoleTypeReader {
     }
   }
 
-  public Long readLong(Validator<ValidationException, Long> validator, String varName) throws ValidationException {
+  public Long readLong(Validator<ValidationException, Long> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       Long value = scanner.nextLong();
       validator.validate(value);
@@ -74,7 +75,7 @@ public class ConsoleTypeReader {
     }
   }
 
-  public <T extends Enum<T>> T readEnum(Class<T> enumClass) throws ValidationException {
+  public <T extends Enum<T>> T readEnum(Class<T> enumClass) throws ValidationException, NoSuchElementException {
     String value = scanner.nextLine();
     try {
       return Enum.valueOf(enumClass, value);

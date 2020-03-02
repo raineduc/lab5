@@ -19,6 +19,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -64,7 +65,7 @@ public class CommandParser {
     mnemonicDefinitions.put(PRINT_DESCENDING, new MnemonicDefinition(PRINT_DESCENDING, CountByNumberOfRoomsCommand.getInfo()));
   }
 
-  public Entry<MnemonicDefinition, Command> parse(String line) throws NullPointerException, ValidationException {
+  public Entry<MnemonicDefinition, Command> parse(String line) throws NullPointerException, ValidationException, NoSuchElementException {
     String[] command = line.trim().split("\\s+?");
     String mnemonic = command[0].toLowerCase();
 
@@ -73,7 +74,7 @@ public class CommandParser {
     return new SimpleEntry<MnemonicDefinition, Command>(mnemonicDefinitions.get(mnemonic), this.matchCommand(mnemonic, arguments));
   }
 
-  public Command matchCommand(String mnemonic, String[] arguments) throws ArrayIndexOutOfBoundsException, ValidationException {
+  public Command matchCommand(String mnemonic, String[] arguments) throws ArrayIndexOutOfBoundsException, ValidationException, NoSuchElementException {
     FlatOptions options;
     try {
       switch (mnemonic) {
@@ -163,7 +164,7 @@ public class CommandParser {
     }
   }
 
-  public FlatOptions parseElement() throws ValidationException {
+  public FlatOptions parseElement() throws ValidationException, NoSuchElementException {
     Scanner scanner = console.getScanner();
     String name = this.<String>read(() -> {
       console.show("Type a name of flat");
@@ -171,7 +172,8 @@ public class CommandParser {
     });
     boolean balcony = this.<Boolean>read(() -> {
       console.show("Does it have balcony?");
-      return typeReader.readBoolean((Boolean b) -> {}, "balcony");
+      return typeReader.readBoolean((Boolean b) -> {
+      }, "balcony");
     });
     Integer numberOfRooms = this.<Integer>read(() -> {
       console.show("Type number of rooms");
@@ -205,7 +207,6 @@ public class CommandParser {
 
     return new FlatOptions(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
   }
-
 
 
   public <T> T read(ValidatedSupplier<T> reader) throws ValidationException {
