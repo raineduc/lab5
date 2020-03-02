@@ -7,6 +7,11 @@ public class House {
   private Integer year; //Поле не может быть null, Значение поля должно быть больше 0
   private int numberOfFloors; //Максимальное значение поля: 29, Значение поля должно быть больше 0
 
+  public House(String name, Integer year) {
+    this.name = name;
+    this.year = year;
+  }
+
   public String getName() {
     return name;
   }

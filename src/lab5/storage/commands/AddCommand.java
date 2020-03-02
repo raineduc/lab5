@@ -14,10 +14,11 @@ public class AddCommand extends AbstractAddCommand {
                       boolean balcony,
                       double timeToMetroByTransport,
                       View view,
-                      House house,
+                      String houseName,
+                      Integer houseYear,
                       Coordinates coordinates
     ) {
-        super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, house, coordinates);
+        super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
         this.storage = storage;
     }
 

@@ -17,15 +17,19 @@ public class UpdateCommand extends AbstractAddCommand {
                        boolean balcony,
                        double timeToMetroByTransport,
                        View view,
-                       House house,
+                       String houseName,
+                       Integer houseYear,
                        Coordinates coordinates) {
-    super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, house, coordinates);
+    super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
     this.id = id;
     this.storage = storage;
   }
 
   public void execute() throws ValidationException, NullPointerException {
-    Flat flat = this.generateFlat();
+    if (storage.get(id) == null) {
+      throw new ValidationException("Space marine with specified id does not exist");
+    }
+    Flat flat = this.generateFlat(() -> id);
     storage.updateFlat(flat, id);
   }
 

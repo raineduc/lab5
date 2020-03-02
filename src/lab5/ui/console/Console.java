@@ -15,16 +15,28 @@ public class Console {
   private HashMap<String, String> availableCommands = new HashMap<>();
   private FlatStorage storage;
   private CommandParser parser;
+  private ConsoleMode mode = ConsoleMode.DIRECT_INPUT;
 
   public Console(FlatStorage storage) {
     this.storage = storage;
     this.parser = new CommandParser(this, storage);
   }
 
+  protected Scanner getScanner() {
+    return scanner;
+  }
+
+  protected ConsoleMode getMode() {
+    return mode;
+  }
 
   public void open() {
     while (true) {
       try {
+        if (mode != ConsoleMode.DIRECT_INPUT) {
+          mode = ConsoleMode.DIRECT_INPUT;
+        }
+
         String currentLine = scanner.nextLine();
         this.executeCommand(parser.parse(currentLine));
       } catch (IllegalStateException e) {
@@ -39,12 +51,12 @@ public class Console {
     scanner.close();
   }
 
-  public void show(String line) {
+  public void show(Object line) {
     System.out.println(line);
   }
 
-  public void show(String[] lines) {
-    for (String line: lines) {
+  public void show(Object[] lines) {
+    for (Object line: lines) {
       System.out.println(line);
     }
   }

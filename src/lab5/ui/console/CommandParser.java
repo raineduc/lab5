@@ -1,14 +1,17 @@
 package lab5.ui.console;
 
 import lab5.lib.Command;
+import lab5.lib.ValidatedSupplier;
 import lab5.lib.ValidationException;
-import lab5.storage.FlatStorage;
+import lab5.lib.Validator;
+import lab5.storage.*;
 import lab5.storage.commands.*;
 import lab5.ui.console.commands.*;
 import lab5.ui.console.invokers.CountInvoker;
 import lab5.ui.console.invokers.GetInfoInvoker;
 import lab5.ui.console.invokers.ShowInvoker;
 import lab5.ui.console.invokers.SumOfTimeInvoker;
+import org.w3c.dom.CDATASection;
 
 import static lab5.ui.console.Mnemonics.*;
 
@@ -16,8 +19,12 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.function.Supplier;
 
 public class CommandParser {
+  private ConsoleTypeReader typeReader;
+  private Scanner scanner;
   private GetInfoInvoker getInfoInvoker;
   private FlatStorage storage;
   private Console console;
@@ -27,6 +34,8 @@ public class CommandParser {
   private HashMap<String, MnemonicDefinition> mnemonicDefinitions = new HashMap<>();
 
   public CommandParser(Console console, FlatStorage storage) {
+    this.scanner = console.getScanner();
+    this.typeReader = new ConsoleTypeReader(scanner, console.getMode());
     this.storage = storage;
     this.console = console;
     this.showInvoker = new ShowInvoker(console);
@@ -65,6 +74,7 @@ public class CommandParser {
   }
 
   public Command matchCommand(String mnemonic, String[] arguments) throws ArrayIndexOutOfBoundsException, ValidationException {
+    FlatOptions options;
     try {
       switch (mnemonic) {
         case HELP:
@@ -87,14 +97,146 @@ public class CommandParser {
           return new CountByNumberOfRoomsCommand(storage, Integer.parseInt(arguments[0]), countInvoker);
         case PRINT_DESCENDING:
           return new GetAllCommand(storage, showInvoker, true);
+        case ADD:
+          options = this.parseElement();
+          return new AddCommand(storage,
+                  options.name,
+                  options.area,
+                  options.numberOfRooms,
+                  options.balcony,
+                  options.timeToMetroByTransport,
+                  options.view,
+                  options.houseName,
+                  options.houseYear,
+                  options.coordinates
+          );
+        case UPDATE:
+          options = this.parseElement();
+          int id = Integer.parseInt(arguments[0]);
+          return new UpdateCommand(storage,
+                  id,
+                  options.name,
+                  options.area,
+                  options.numberOfRooms,
+                  options.balcony,
+                  options.timeToMetroByTransport,
+                  options.view,
+                  options.houseName,
+                  options.houseYear,
+                  options.coordinates
+          );
+        case ADD_IF_MIN:
+          options = this.parseElement();
+          return new AddIfMinCommand(storage,
+                  options.name,
+                  options.area,
+                  options.numberOfRooms,
+                  options.balcony,
+                  options.timeToMetroByTransport,
+                  options.view,
+                  options.houseName,
+                  options.houseYear,
+                  options.coordinates
+          );
+        case REMOVE_LOWER:
+          options = this.parseElement();
+          return new RemoveLowerCommand(storage,
+                  options.name,
+                  options.area,
+                  options.numberOfRooms,
+                  options.balcony,
+                  options.timeToMetroByTransport,
+                  options.view,
+                  options.houseName,
+                  options.houseYear,
+                  options.coordinates
+          );
         default:
           throw new ValidationException("There is no such command");
       }
     } catch (ArrayIndexOutOfBoundsException e) {
       throw new ValidationException("Insufficient amount of arguments");
     } catch (NumberFormatException e) {
-      throw new ValidationException("Provided number is too large or incorrect");
+      throw new ValidationException("Provided argument is too large or incorrect");
+    } catch (ValidationException e) {
+      throw e;
     }
+  }
+
+  public FlatOptions parseElement() throws ValidationException {
+    Scanner scanner = console.getScanner();
+    String name = this.<String>read(() -> {
+      console.show("Type a name of flat");
+      return typeReader.readString(FlatValidator::validateName, "name");
+    });
+    boolean balcony = this.<Boolean>read(() -> {
+      console.show("Does it have balcony?");
+      return typeReader.readBoolean((Boolean b) -> {}, "balcony");
+    });
+    Integer numberOfRooms = this.<Integer>read(() -> {
+      console.show("Type number of rooms");
+      return typeReader.readInteger(FlatValidator::validateNumberOfRooms, "numberOfRooms");
+    });
+    double timeToMetroByTransport = this.<Double>read(() -> {
+      console.show("How much time will it take to metro by transport?");
+      return typeReader.readDouble(FlatValidator::validateTimeToMetroByTransport, "timeToMetroByTransport");
+    });
+    View view = this.<View>read(() -> {
+      console.show("which view does it have? Choose one of these");
+      console.show(View.values());
+      return typeReader.readEnum(View.class);
+    });
+    String houseName = this.<String>read(() -> {
+      console.show("Type house's name");
+      return typeReader.readString(FlatValidator::validateHouseName, "houseName");
+    });
+    Integer houseYear = this.<Integer>read(() -> {
+      console.show("Type house's year");
+      return typeReader.readInteger(FlatValidator::validateHouseYear, "houseYear");
+    });
+    int area = this.<Integer>read(() -> {
+      console.show("Type area");
+      return typeReader.readInteger(FlatValidator::validateArea, "area");
+    });
+    Coordinates coordinates = this.<Coordinates>read(() -> {
+      console.show("Now type a position of the house");
+      return parseCoordinates();
+    });
+
+    return new FlatOptions(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
+  }
+
+
+
+  public <T> T read(ValidatedSupplier<T> reader) throws ValidationException {
+    T received;
+    if (console.getMode() == ConsoleMode.DIRECT_INPUT) {
+      while (true) {
+        try {
+          received = reader.get();
+          break;
+        } catch (ValidationException e) {
+          console.show(e.getMessage());
+          console.show("Try again");
+        }
+      }
+    } else {
+      received = reader.get();
+    }
+
+    return received;
+  }
+
+  public Coordinates parseCoordinates() throws ValidationException {
+    console.show("Type x coordinate");
+    long xCoordinate = typeReader.readLong((Long i) -> {
+    }, "x coordinate");
+    console.show("Type y coordinate");
+    Long yCoordinate = typeReader.readLong((Long i) -> {
+    }, "y coordinate");
+    Coordinates coordinates = new Coordinates(xCoordinate, yCoordinate);
+    FlatValidator.validateCoordinates(coordinates);
+    return coordinates;
   }
 }
 

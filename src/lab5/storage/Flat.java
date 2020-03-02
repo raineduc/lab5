@@ -23,10 +23,13 @@ public class Flat implements Comparable<Flat>  {
               boolean balcony,
               double timeToMetroByTransport,
               View view,
-              House house,
+              String houseName,
+              Integer houseYear,
               Coordinates coordinates,
               IDGenerator<Integer> idGenerator) throws ValidationException, NullPointerException {
-    FlatValidator.validate(name, coordinates, area, view, house);
+    this.house = new House(houseName, houseYear);
+
+    FlatValidator.validate(name, coordinates, area, view, numberOfRooms, timeToMetroByTransport, house);
 
     this.id = idGenerator.generate();
     this.name = name;
@@ -35,11 +38,9 @@ public class Flat implements Comparable<Flat>  {
     this.balcony = balcony;
     this.timeToMetroByTransport = timeToMetroByTransport;
     this.view = view;
-    this.house = house;
     this.coordinates = coordinates;
+    this.house = new House(houseName, houseYear);
   }
-
-
 
   public LocalDateTime getCreationDate() {
     return this.creationDate;
@@ -65,15 +66,19 @@ public class Flat implements Comparable<Flat>  {
     return this.id - flat.getId();
   }
 
+  public int getArea() {
+    return area;
+  }
 
   public String toString() {
     return "{\n" +
-            "  view: " + view.toString() +
-            "  id: " + id +
-            "  number of rooms: " + numberOfRooms +
-            "  time to metro by transport: " + timeToMetroByTransport +
-            "  area: " + area +
-            "  balcony: " + balcony +
+            "  name: " + name + "\n" +
+            "  view: " + view.toString() + "\n" +
+            "  id: " + id + "\n" +
+            "  number of rooms: " + numberOfRooms + "\n" +
+            "  time to metro by transport: " + timeToMetroByTransport + "\n" +
+            "  area: " + area + "\n" +
+            "  balcony: " + balcony + "\n" +
             "  house:\n" + house.toString(2) + "\n" +
             "  coordinates:\n" + coordinates.toString(2) + "\n" +
             "}";
