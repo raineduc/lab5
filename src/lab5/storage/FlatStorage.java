@@ -41,7 +41,7 @@ public class FlatStorage {
     if (currentFlat == null) {
       throw new ValidationException("Space marine with specified id does not exist");
     }
-    storage.replace(flat.getId(), flat);
+    storage.replace(currentFlat.getId(), flat);
   }
 
   public void removeFlat(int id) {
@@ -98,5 +98,9 @@ public class FlatStorage {
   public HashMap<String, String> getInfo() {
     info.replace("size", ((Integer) storage.size()).toString());
     return info;
+  }
+
+  public Flat get(int id) {
+    return storage.get(id);
   }
 }

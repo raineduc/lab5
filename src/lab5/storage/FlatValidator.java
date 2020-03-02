@@ -8,22 +8,35 @@ public class FlatValidator {
                               Coordinates coordinates,
                               int area,
                               View view,
+                              Integer numberOfRooms,
+                              double timeToMetroByTransport,
                               House house) throws ValidationException, NullPointerException {
     FlatValidator.validateName(name);
     FlatValidator.validateCoordinates(coordinates);
     FlatValidator.validateArea(area);
     FlatValidator.validateView(view);
+    FlatValidator.validateNumberOfRooms(numberOfRooms);
+    FlatValidator.validateTimeToMetroByTransport(timeToMetroByTransport);
     FlatValidator.validateHouse(house);
   }
-  public static void validateName(@NotNull String name) throws ValidationException, NullPointerException {
+  public static void validateName(String name) throws ValidationException {
+    if (name == null) {
+      throw new ValidationException("Name must not be null");
+    }
+
     if (name.length() == 0) {
       throw new ValidationException("SpaceMarine's name should not be empty");
     }
   }
-  public static void validateCoordinates(Coordinates coordinates) throws ValidationException, NullPointerException {
+  public static void validateCoordinates(Coordinates coordinates) throws ValidationException {
     if (coordinates.getXCoordinate() > 528) {
       throw new ValidationException("X coordinate has max value is 528");
     }
+
+    if (coordinates.getYCoordinate() == null) {
+      throw new ValidationException("Y coordinate must not be null");
+    }
+
     if (coordinates.getYCoordinate() > 743) {
       throw new ValidationException("Y coordinate has max value is 743");
     }
@@ -41,19 +54,37 @@ public class FlatValidator {
   }
 
   public static void validateTimeToMetroByTransport(double timeToMetroByTransport) throws ValidationException {
-    if (timeToMetroByTransport <= 0) {
+    if (timeToMetroByTransport <= 0 || timeToMetroByTransport >= 11) {
       throw new ValidationException("Time to metro by transport  must have value in interval (0,11)");
     }
   }
 
-  public static void validateView(View view) throws NullPointerException {
+  public static void validateView(View view) throws ValidationException {
     if (view == null) {
-      throw new NullPointerException("View must not be null");
+      throw new ValidationException("View must not be null");
     }
   }
-  public static void validateHouse(House house) throws NullPointerException {
+  public static void validateHouse(House house) throws ValidationException {
     if (house == null) {
-      throw new NullPointerException("House must not be null");
+      throw new ValidationException("House must not be null");
+    }
+
+    validateHouseName(house.getName());
+    validateHouseYear(house.getYear());
+  }
+
+  public static void validateHouseName(String houseName) throws ValidationException {
+    if (houseName == null) {
+      throw new ValidationException("House's name must not be null");
+    }
+  }
+  public static void validateHouseYear(Integer year) throws ValidationException {
+    if (year == null) {
+      throw new ValidationException("House's year must not be null");
+    }
+
+    if (year <= 0) {
+      throw new ValidationException("House's year must be positive");
     }
   }
 

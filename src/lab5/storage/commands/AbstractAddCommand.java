@@ -15,6 +15,8 @@ public abstract class AbstractAddCommand implements Command {
   private Integer numberOfRoms;
   private boolean balcony;
   private double timeToMetroByTransport;
+  private String houseName;
+  private Integer houseYear;
 
   public AbstractAddCommand(String name,
                             int area,
@@ -22,12 +24,14 @@ public abstract class AbstractAddCommand implements Command {
                             boolean balcony,
                             double timeToMetroByTransport,
                             View view,
-                            House house,
+                            String houseName,
+                            Integer houseYear,
                             Coordinates coordinates) {
     this.name = name;
     this.coordinates = coordinates;
     this.view = view;
-    this.house = house;
+    this.houseName = houseName;
+    this.houseYear = houseYear;
     this.area = area;
     this.numberOfRoms = numberOfRooms;
     this.balcony = balcony;
@@ -75,7 +79,25 @@ public abstract class AbstractAddCommand implements Command {
             balcony,
             timeToMetroByTransport,
             view,
-            house,
+            houseName,
+            houseYear,
+            coordinates,
+            idGenerator
+    );
+
+    return flat;
+  }
+
+  public Flat generateFlat(IDGenerator<Integer> idGenerator) throws ValidationException, NullPointerException {
+    Flat flat = new Flat(
+            name,
+            area,
+            numberOfRoms,
+            balcony,
+            timeToMetroByTransport,
+            view,
+            houseName,
+            houseYear,
             coordinates,
             idGenerator
     );

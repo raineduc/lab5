@@ -16,10 +16,11 @@ public class AddIfMinCommand extends AbstractAddCommand {
           boolean balcony,
           double timeToMetroByTransport,
           View view,
-          House house,
+          String houseName,
+          Integer houseYear,
           Coordinates coordinates
   ) {
-    super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, house, coordinates);
+    super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
     this.storage = storage;
   }
 
@@ -29,7 +30,7 @@ public class AddIfMinCommand extends AbstractAddCommand {
     storage.addFlatIf(flat, (map) -> {
       boolean isMin = true;
       for (Flat currentFlat: map.values()) {
-        if (currentFlat.getId() < flat.getId()) {
+        if (currentFlat.getArea() < flat.getArea()) {
           isMin = false;
           break;
         }

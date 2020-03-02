@@ -31,4 +31,11 @@ public class IntIDGenerator implements IDGenerator<Integer> {
     blackList.add(generated);
     return generated;
   }
+
+  public Integer generate(int explicit) {
+    if (!blackList.contains(explicit)) {
+      return explicit;
+    }
+    return this.generate();
+  }
 }
