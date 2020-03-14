@@ -16,11 +16,15 @@ public class ConsoleTypeReader {
     this.scanner = scanner;
   }
 
+  public void setScanner(Scanner scanner) {
+    this.scanner = scanner;
+  }
+
   public int readInteger(Validator<ValidationException, Integer> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       int value = scanner.nextInt();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -32,7 +36,7 @@ public class ConsoleTypeReader {
     try {
       double value = scanner.nextDouble();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -44,7 +48,7 @@ public class ConsoleTypeReader {
     try {
       boolean value = scanner.nextBoolean();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -54,7 +58,7 @@ public class ConsoleTypeReader {
 
   public String readString(Validator<ValidationException, String> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
-      String value = scanner.nextLine();
+      String value = scanner.nextLine().trim();
       validator.validate(value);
       return value;
     } catch (InputMismatchException e) {
@@ -67,7 +71,7 @@ public class ConsoleTypeReader {
     try {
       Long value = scanner.nextLong();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -76,7 +80,7 @@ public class ConsoleTypeReader {
   }
 
   public <T extends Enum<T>> T readEnum(Class<T> enumClass) throws ValidationException, NoSuchElementException {
-    String value = scanner.nextLine();
+    String value = scanner.nextLine().trim();
     try {
       return Enum.valueOf(enumClass, value);
     } catch (IllegalArgumentException e) {

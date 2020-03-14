@@ -3,7 +3,6 @@ package lab5.ui.console;
 import lab5.lib.Command;
 import lab5.lib.ValidatedSupplier;
 import lab5.lib.ValidationException;
-import lab5.lib.Validator;
 import lab5.storage.*;
 import lab5.storage.commands.*;
 import lab5.ui.console.commands.*;
@@ -11,17 +10,17 @@ import lab5.ui.console.invokers.CountInvoker;
 import lab5.ui.console.invokers.GetInfoInvoker;
 import lab5.ui.console.invokers.ShowInvoker;
 import lab5.ui.console.invokers.SumOfTimeInvoker;
-import org.w3c.dom.CDATASection;
 
 import static lab5.ui.console.Mnemonics.*;
 
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.function.Supplier;
 
 public class CommandParser {
   private ConsoleTypeReader typeReader;
@@ -55,7 +54,7 @@ public class CommandParser {
     mnemonicDefinitions.put(REMOVE, new MnemonicDefinition(REMOVE, RemoveCommand.getInfo(), "id"));
     mnemonicDefinitions.put(CLEAR, new MnemonicDefinition(CLEAR, ClearCommand.getInfo()));
     mnemonicDefinitions.put(SAVE, new MnemonicDefinition(SAVE, SaveCommand.getInfo()));
-    mnemonicDefinitions.put(EXECUTE, new MnemonicDefinition(EXECUTE, ExecuteCommand.getInfo()));
+    mnemonicDefinitions.put(EXECUTE, new MnemonicDefinition(EXECUTE, ExecuteScriptCommand.getInfo()));
     mnemonicDefinitions.put(EXIT, new MnemonicDefinition(EXIT, ExitCommand.getInfo()));
     mnemonicDefinitions.put(ADD_IF_MIN, new MnemonicDefinition(ADD_IF_MIN, AddIfMinCommand.getInfo(), "{element}"));
     mnemonicDefinitions.put(REMOVE_LOWER, new MnemonicDefinition(REMOVE_LOWER, RemoveLowerCommand.getInfo()));
@@ -66,8 +65,11 @@ public class CommandParser {
   }
 
   public Entry<MnemonicDefinition, Command> parse(String line) throws NullPointerException, ValidationException, NoSuchElementException {
+    console.clearCommandResults();
     String[] command = line.trim().split("\\s+?");
     String mnemonic = command[0].toLowerCase();
+
+    typeReader.setScanner(scanner);
 
     String[] arguments = command.length > 0 ? Arrays.copyOfRange(command, 1, command.length) : new String[0];
 
@@ -152,6 +154,8 @@ public class CommandParser {
                   options.houseYear,
                   options.coordinates
           );
+        case EXECUTE:
+          return new ExecuteScriptCommand(console, Path.of(arguments[0]));
         default:
           throw new ValidationException("There is no such command");
       }
@@ -159,49 +163,50 @@ public class CommandParser {
       throw new ValidationException("Insufficient amount of arguments");
     } catch (NumberFormatException e) {
       throw new ValidationException("Provided argument is too large or incorrect");
+    } catch (InvalidPathException e) {
+      throw new ValidationException("Path is invalid");
     } catch (ValidationException e) {
       throw e;
     }
   }
 
   public FlatOptions parseElement() throws ValidationException, NoSuchElementException {
-    Scanner scanner = console.getScanner();
     String name = this.<String>read(() -> {
-      console.show("Type a name of flat");
+      console.show("Type a name of flat", ConsoleMode.DIRECT_INPUT);
       return typeReader.readString(FlatValidator::validateName, "name");
     });
     boolean balcony = this.<Boolean>read(() -> {
-      console.show("Does it have balcony?");
+      console.show("Does it have balcony?", ConsoleMode.DIRECT_INPUT);
       return typeReader.readBoolean((Boolean b) -> {
       }, "balcony");
     });
     Integer numberOfRooms = this.<Integer>read(() -> {
-      console.show("Type number of rooms");
+      console.show("Type number of rooms", ConsoleMode.DIRECT_INPUT);
       return typeReader.readInteger(FlatValidator::validateNumberOfRooms, "numberOfRooms");
     });
     double timeToMetroByTransport = this.<Double>read(() -> {
-      console.show("How much time will it take to metro by transport?");
+      console.show("How much time will it take to metro by transport?", ConsoleMode.DIRECT_INPUT);
       return typeReader.readDouble(FlatValidator::validateTimeToMetroByTransport, "timeToMetroByTransport");
     });
     View view = this.<View>read(() -> {
-      console.show("which view does it have? Choose one of these");
-      console.show(View.values());
+      console.show("which view does it have? Choose one of these", ConsoleMode.DIRECT_INPUT);
+      console.show(View.values(), ConsoleMode.DIRECT_INPUT);
       return typeReader.readEnum(View.class);
     });
     String houseName = this.<String>read(() -> {
-      console.show("Type house's name");
+      console.show("Type house's name", ConsoleMode.DIRECT_INPUT);
       return typeReader.readString(FlatValidator::validateHouseName, "houseName");
     });
     Integer houseYear = this.<Integer>read(() -> {
-      console.show("Type house's year");
+      console.show("Type house's year", ConsoleMode.DIRECT_INPUT);
       return typeReader.readInteger(FlatValidator::validateHouseYear, "houseYear");
     });
     int area = this.<Integer>read(() -> {
-      console.show("Type area");
+      console.show("Type area", ConsoleMode.DIRECT_INPUT);
       return typeReader.readInteger(FlatValidator::validateArea, "area");
     });
     Coordinates coordinates = this.<Coordinates>read(() -> {
-      console.show("Now type a position of the house");
+      console.show("Now type a position of the house", ConsoleMode.DIRECT_INPUT);
       return parseCoordinates();
     });
 
@@ -229,15 +234,19 @@ public class CommandParser {
   }
 
   public Coordinates parseCoordinates() throws ValidationException {
-    console.show("Type x coordinate");
+    console.show("Type x coordinate", ConsoleMode.DIRECT_INPUT);
     long xCoordinate = typeReader.readLong((Long i) -> {
     }, "x coordinate");
-    console.show("Type y coordinate");
+    console.show("Type y coordinate", ConsoleMode.DIRECT_INPUT);
     Long yCoordinate = typeReader.readLong((Long i) -> {
     }, "y coordinate");
     Coordinates coordinates = new Coordinates(xCoordinate, yCoordinate);
     FlatValidator.validateCoordinates(coordinates);
     return coordinates;
+  }
+
+  public void setScanner(Scanner scanner) {
+    this.scanner = scanner;
   }
 }
 
