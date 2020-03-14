@@ -8,6 +8,6 @@ public class CountInvoker extends ConsoleInvoker<Integer> {
   }
 
   public void receive(Integer count) {
-    console.show(count.toString());
+    console.addCommandResult(count.toString());
   }
 }

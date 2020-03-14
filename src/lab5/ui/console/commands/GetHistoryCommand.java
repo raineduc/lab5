@@ -12,7 +12,9 @@ public class GetHistoryCommand implements Command {
   }
 
   public void execute() {
-    console.show(console.getLastCommands());
+    for (String command: console.getLastCommands()) {
+      console.addCommandResult(command);
+    }
   }
 
   public static String getInfo() {

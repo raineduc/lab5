@@ -9,7 +9,7 @@ public class Mnemonics {
   static final String REMOVE = "remove_by_id";
   static final String CLEAR = "clear";
   static final String SAVE = "save";
-  static final String EXECUTE = "execute_string";
+  static final String EXECUTE = "execute_script";
   static final String EXIT = "exit";
   static final String ADD_IF_MIN = "add_if_min";
   static final String GET_HISTORY = "history";

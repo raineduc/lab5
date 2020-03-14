@@ -19,12 +19,9 @@ public class HelpCommand implements Command {
   }
 
   public void execute() {
-    ArrayList<String> lines = new ArrayList<>();
     for (MnemonicDefinition definition: definitions) {
-      lines.add(definition.getInfo());
+      console.addCommandResult(definition.getInfo());
     }
-
-    console.show(lines.toArray(new String[definitions.size()]));
   }
 
   public static String getInfo() {

@@ -4,6 +4,7 @@ import lab5.lib.ValidationException;
 import lab5.lib.Validator;
 
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ConsoleTypeReader {
@@ -15,11 +16,15 @@ public class ConsoleTypeReader {
     this.scanner = scanner;
   }
 
-  public int readInteger(Validator<ValidationException, Integer> validator, String varName) throws ValidationException {
+  public void setScanner(Scanner scanner) {
+    this.scanner = scanner;
+  }
+
+  public int readInteger(Validator<ValidationException, Integer> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       int value = scanner.nextInt();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -27,11 +32,11 @@ public class ConsoleTypeReader {
     }
   }
 
-  public double readDouble(Validator<ValidationException, Double> validator, String varName) throws ValidationException {
+  public double readDouble(Validator<ValidationException, Double> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       double value = scanner.nextDouble();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -39,11 +44,11 @@ public class ConsoleTypeReader {
     }
   }
 
-  public boolean readBoolean(Validator<ValidationException, Boolean> validator, String varName) throws ValidationException, InputMismatchException {
+  public boolean readBoolean(Validator<ValidationException, Boolean> validator, String varName) throws ValidationException, InputMismatchException, NoSuchElementException {
     try {
       boolean value = scanner.nextBoolean();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -51,9 +56,9 @@ public class ConsoleTypeReader {
     }
   }
 
-  public String readString(Validator<ValidationException, String> validator, String varName) throws ValidationException {
+  public String readString(Validator<ValidationException, String> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
-      String value = scanner.nextLine();
+      String value = scanner.nextLine().trim();
       validator.validate(value);
       return value;
     } catch (InputMismatchException e) {
@@ -62,11 +67,11 @@ public class ConsoleTypeReader {
     }
   }
 
-  public Long readLong(Validator<ValidationException, Long> validator, String varName) throws ValidationException {
+  public Long readLong(Validator<ValidationException, Long> validator, String varName) throws ValidationException, NoSuchElementException {
     try {
       Long value = scanner.nextLong();
       validator.validate(value);
-      scanner.nextLine();
+      if (scanner.hasNextLine()) scanner.nextLine();
       return value;
     } catch (InputMismatchException e) {
       if (mode == ConsoleMode.DIRECT_INPUT) scanner.next();
@@ -74,8 +79,8 @@ public class ConsoleTypeReader {
     }
   }
 
-  public <T extends Enum<T>> T readEnum(Class<T> enumClass) throws ValidationException {
-    String value = scanner.nextLine();
+  public <T extends Enum<T>> T readEnum(Class<T> enumClass) throws ValidationException, NoSuchElementException {
+    String value = scanner.nextLine().trim();
     try {
       return Enum.valueOf(enumClass, value);
     } catch (IllegalArgumentException e) {

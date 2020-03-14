@@ -8,6 +8,6 @@ public class SumOfTimeInvoker extends ConsoleInvoker<Double> {
   }
 
   public void receive(Double sum) {
-    console.show(sum.toString());
+    console.addCommandResult(sum.toString());
   }
 }

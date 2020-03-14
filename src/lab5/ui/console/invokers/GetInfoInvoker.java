@@ -13,7 +13,7 @@ public class GetInfoInvoker extends ConsoleInvoker<HashMap<String, String>> {
   @Override
   public void receive(HashMap<String, String> info) {
     for (String key: info.keySet()) {
-      console.show(key + info.get(key));
+      console.addCommandResult(key + info.get(key));
     }
   }
 }
