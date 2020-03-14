@@ -22,6 +22,11 @@ public class AddCommand extends AbstractAddCommand {
         this.storage = storage;
     }
 
+    public AddCommand(FlatOptions options, FlatStorage storage) {
+      super(options);
+      this.storage = storage;
+    }
+
     public void execute() throws ValidationException, NullPointerException {
       Flat flat = this.generateFlat();
       storage.addFlat(flat);

@@ -38,6 +38,18 @@ public abstract class AbstractAddCommand implements Command {
     this.timeToMetroByTransport = timeToMetroByTransport;
   }
 
+  public AbstractAddCommand(FlatOptions options) {
+    this.name = options.name;
+    this.coordinates = options.coordinates;
+    this.view = options.view;
+    this.houseName = options.houseName;
+    this.houseYear = options.houseYear;
+    this.area = options.area;
+    this.numberOfRoms = options.numberOfRooms;
+    this.balcony = options.balcony;
+    this.timeToMetroByTransport = options.timeToMetroByTransport;
+  }
+
   public House getHouse() {
     return house;
   }

@@ -27,6 +27,11 @@ public class RemoveLowerCommand extends AbstractAddCommand {
     this.storage = storage;
   }
 
+  public RemoveLowerCommand(FlatOptions options, FlatStorage storage) {
+    super(options);
+    this.storage = storage;
+  }
+
   @Override
   public void execute() throws ValidationException, NullPointerException {
     Flat comparableFlat = this.generateFlat();

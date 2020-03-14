@@ -25,6 +25,12 @@ public class UpdateCommand extends AbstractAddCommand {
     this.storage = storage;
   }
 
+  public UpdateCommand(FlatOptions options, FlatStorage storage, int id) {
+    super(options);
+    this.id = id;
+    this.storage = storage;
+  }
+
   public void execute() throws ValidationException, NullPointerException {
     if (storage.get(id) == null) {
       throw new ValidationException("Space marine with specified id does not exist");

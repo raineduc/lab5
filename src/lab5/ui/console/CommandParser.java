@@ -101,59 +101,13 @@ public class CommandParser {
         case PRINT_DESCENDING:
           return new GetAllCommand(storage, showInvoker, true);
         case ADD:
-          options = this.parseElement();
-          return new AddCommand(storage,
-                  options.name,
-                  options.area,
-                  options.numberOfRooms,
-                  options.balcony,
-                  options.timeToMetroByTransport,
-                  options.view,
-                  options.houseName,
-                  options.houseYear,
-                  options.coordinates
-          );
+          return new AddCommand(this.parseElement(), storage);
         case UPDATE:
-          options = this.parseElement();
-          int id = Integer.parseInt(arguments[0]);
-          return new UpdateCommand(storage,
-                  id,
-                  options.name,
-                  options.area,
-                  options.numberOfRooms,
-                  options.balcony,
-                  options.timeToMetroByTransport,
-                  options.view,
-                  options.houseName,
-                  options.houseYear,
-                  options.coordinates
-          );
+          return new UpdateCommand(this.parseElement(), storage, Integer.parseInt(arguments[0]));
         case ADD_IF_MIN:
-          options = this.parseElement();
-          return new AddIfMinCommand(storage,
-                  options.name,
-                  options.area,
-                  options.numberOfRooms,
-                  options.balcony,
-                  options.timeToMetroByTransport,
-                  options.view,
-                  options.houseName,
-                  options.houseYear,
-                  options.coordinates
-          );
+          return new AddIfMinCommand(this.parseElement(), storage);
         case REMOVE_LOWER:
-          options = this.parseElement();
-          return new RemoveLowerCommand(storage,
-                  options.name,
-                  options.area,
-                  options.numberOfRooms,
-                  options.balcony,
-                  options.timeToMetroByTransport,
-                  options.view,
-                  options.houseName,
-                  options.houseYear,
-                  options.coordinates
-          );
+          return new RemoveLowerCommand(this.parseElement(), storage);
         case EXECUTE:
           return new ExecuteScriptCommand(console, Path.of(arguments[0]));
         default:

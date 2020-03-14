@@ -24,6 +24,11 @@ public class AddIfMinCommand extends AbstractAddCommand {
     this.storage = storage;
   }
 
+  public AddIfMinCommand(FlatOptions options, FlatStorage storage) {
+    super(options);
+    this.storage = storage;
+  }
+
   @Override
   public void execute() throws ValidationException, NullPointerException {
     Flat flat = this.generateFlat();
