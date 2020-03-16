@@ -2,8 +2,11 @@ package lab5.storage;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import static lab5.utils.StringUtils.repeat;
 
+@XmlAccessorType
 public class Coordinates {
     private long x;
     private Long y;

@@ -1,8 +1,13 @@
 package lab5.storage;
 
 import lab5.lib.ValidationException;
+import lab5.storage.jaxb_adapters.FlatsAdapter;
 import lab5.utils.IDGenerator;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
 public class Flat implements Comparable<Flat>  {
@@ -68,6 +73,22 @@ public class Flat implements Comparable<Flat>  {
 
   public int getArea() {
     return area;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public Coordinates getCoordinates() {
+    return coordinates;
+  }
+
+  public boolean isBalcony() {
+    return balcony;
+  }
+
+  public House getHouse() {
+    return house;
   }
 
   public String toString() {

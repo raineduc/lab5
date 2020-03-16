@@ -5,7 +5,6 @@ import static lab5.utils.StringUtils.repeat;
 public class House {
   private String name; //Поле может быть null
   private Integer year; //Поле не может быть null, Значение поля должно быть больше 0
-  private int numberOfFloors; //Максимальное значение поля: 29, Значение поля должно быть больше 0
 
   public House(String name, Integer year) {
     this.name = name;
@@ -20,14 +19,9 @@ public class House {
     return year;
   }
 
-  public int getNumberOfFloors() {
-    return numberOfFloors;
-  }
-
   public String generateStringShape(int indent) {
     return repeat(indent, " ") + "{\n" +
             repeat(indent, " ") + "  year: " + this.getYear() + "\n" +
-            repeat(indent, " ") + "  number of floors: " + this.getNumberOfFloors() + "\n" +
             repeat(indent, " ") + "}";
 
   }
