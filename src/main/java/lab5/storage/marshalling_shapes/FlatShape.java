@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 @XmlRootElement(name = "flatShape")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FlatShape {
-  public int id;
+  public Integer id;
   public String name;
   public CoordinatesShape coordinates;
   public String creationDate;
-  public int area;
+  public Integer area;
   public Integer numberOfRooms;
-  public boolean balcony;
-  public double timeToMetroByTransport;
+  public Boolean balcony;
+  public Double timeToMetroByTransport;
   public View view;
   public HouseShape house;
 }

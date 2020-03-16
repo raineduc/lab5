@@ -25,8 +25,22 @@ public class FlatStorage {
           throws ValidationException {
     try {
       storage = databaseManager.read().getFlats();
+      for (Flat flat: storage.values()) {
+        FlatValidator.validate(
+                flat.getName(),
+                flat.getCoordinates(),
+                flat.getArea(),
+                flat.getView(),
+                flat.getNumberOfRooms(),
+                flat.getTimeToMetroByTransport(),
+                flat.getHouse()
+        );
+      }
     } catch (SourceEmptyException e) {
       storage = new LinkedHashMap<>();
+    }
+    catch (ValidationException | NullPointerException e) {
+      throw new Error("Source has invalid data");
     }
     info.put("type", "LinkedHashMap");
     info.put("date", initializationDate.toString());

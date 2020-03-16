@@ -1,6 +1,7 @@
 package lab5.database;
 
 import javax.xml.bind.*;
+import javax.xml.bind.helpers.DefaultValidationEventHandler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,7 +27,16 @@ public class XmlManager<T> implements Manager<T> {
       JAXBContext context = JAXBContext.newInstance(classObject);
       Unmarshaller unmarshaller = context.createUnmarshaller();
       Object o = unmarshaller.unmarshal(file);
-      return classObject.cast(o);
+
+      unmarshaller.setEventHandler(new DefaultValidationEventHandler());
+
+
+      T casted = classObject.cast(o);
+      if (casted == null) {
+        throw new ValidationException("Apparently, your xml file is invalid");
+      }
+
+      return casted;
     } catch (JAXBException e) {
       throw new ValidationException("Something has gone wrong with xml unmarshalling (Probably xml file is invalid): \n" +
               e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
