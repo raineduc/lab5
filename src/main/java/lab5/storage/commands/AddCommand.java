@@ -18,12 +18,12 @@ public class AddCommand extends AbstractAddCommand {
                       Integer houseYear,
                       Coordinates coordinates
     ) {
-        super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
+        super(storage, name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
         this.storage = storage;
     }
 
     public AddCommand(FlatOptions options, FlatStorage storage) {
-      super(options);
+      super(options, storage);
       this.storage = storage;
     }
 

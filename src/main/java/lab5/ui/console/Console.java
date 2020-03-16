@@ -12,6 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+
+/**
+ * Works with command line
+ * @author Raineduc
+ */
 public class Console {
   private Scanner scanner = new Scanner(System.in);
   private CommandHistory history = new CommandHistory();
@@ -21,19 +26,33 @@ public class Console {
   private ArrayList<String> commandResults = new ArrayList<>();
   private ArrayList<Path> paths = new ArrayList<>();
 
+
   public Console(FlatStorage storage) {
     this.storage = storage;
     this.parser = new CommandParser(this, storage);
   }
 
+  /**
+   *
+   * @return Scanner This returns java.utils.Scanner
+   */
   protected Scanner getScanner() {
     return scanner;
   }
 
+
+  /**
+   *
+   * @return This returns ConsoleMode
+   */
   protected ConsoleMode getMode() {
     return mode;
   }
 
+
+  /**
+   * Opens interactive mode via Scanner
+   */
   public void open() {
     while (true) {
       try {
@@ -55,15 +74,25 @@ public class Console {
     }
   }
 
+  /**
+   * Close scanner
+   */
   public void exit() {
     scanner.close();
   }
 
-
+  /**
+   * Send string to output without line break symbol
+   * @param line Calls Object.toString() internally
+   */
   public void showContinuously(Object line) {
     System.out.print(line);
   }
 
+  /**
+   * Send strong to output with line break symbol
+   * @param line Calls Object.toString() internally
+   */
   public void show(Object line) {
     System.out.println(line);
   }
