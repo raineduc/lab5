@@ -11,6 +11,7 @@ import lab5.ui.console.invokers.CountInvoker;
 import lab5.ui.console.invokers.GetInfoInvoker;
 import lab5.ui.console.invokers.ShowInvoker;
 import lab5.ui.console.invokers.SumOfTimeInvoker;
+import org.w3c.dom.ls.LSOutput;
 
 import static lab5.ui.console.Mnemonics.*;
 
@@ -67,7 +68,7 @@ public class CommandParser {
 
   public Entry<MnemonicDefinition, Command> parse(String line) throws NullPointerException, ValidationException, NoSuchElementException {
     console.clearCommandResults();
-    String[] command = line.trim().split("\\s+?");
+    String[] command = line.trim().split("\\s+");
     String mnemonic = command[0].toLowerCase();
 
     typeReader.setScanner(scanner);
@@ -104,7 +105,11 @@ public class CommandParser {
         case ADD:
           return new AddCommand(this.parseElement(), storage);
         case UPDATE:
-          return new UpdateCommand(this.parseElement(), storage, Integer.parseInt(arguments[0]));
+          int id = Integer.parseInt(arguments[0].trim());
+          if (!storage.has(id)) {
+            throw new ValidationException("Space marine with specified id does not exist");
+          }
+          return new UpdateCommand(this.parseElement(), storage, id);
         case ADD_IF_MIN:
           return new AddIfMinCommand(this.parseElement(), storage);
         case REMOVE_LOWER:

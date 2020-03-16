@@ -147,6 +147,11 @@ public class FlatStorage {
     return storage.get(id);
   }
 
+  public boolean has(Integer id) {
+    if (storage.get(id) != null) return true;
+    return false;
+  }
+
   public void save() throws ValidationException {
     if (databaseManager == null) {
       throw new ValidationException("Database is not provided or not available");
