@@ -5,6 +5,7 @@ import lab5.lib.ValidatedSupplier;
 import lab5.lib.ValidationException;
 import lab5.storage.*;
 import lab5.storage.commands.*;
+import lab5.storage.commands.SaveCommand;
 import lab5.ui.console.commands.*;
 import lab5.ui.console.invokers.CountInvoker;
 import lab5.ui.console.invokers.GetInfoInvoker;
@@ -110,6 +111,8 @@ public class CommandParser {
           return new RemoveLowerCommand(this.parseElement(), storage);
         case EXECUTE:
           return new ExecuteScriptCommand(console, Path.of(arguments[0]));
+        case SAVE:
+          return new SaveCommand(storage);
         default:
           throw new ValidationException("There is no such command");
       }

@@ -1,17 +1,56 @@
 package lab5.storage;
 
+import lab5.database.SourceEmptyException;
 import lab5.lib.ValidationException;
+import lab5.storage.marshalling_shapes.Flats;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@XmlRootElement(name = "flats")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FlatStorage {
   private HashMap<String, String> info = new HashMap<>();
-  private LinkedHashMap<Integer, Flat> storage = new LinkedHashMap<>();
+  @XmlElement()
+  private LinkedHashMap<Integer, Flat> storage;
   private Date initializationDate = new Date();
+  private lab5.database.Manager<Flats> databaseManager;
+
+  public FlatStorage(lab5.database.Manager<Flats> databaseManager)
+          throws ValidationException {
+    try {
+      storage = databaseManager.read().getFlats();
+      for (Flat flat: storage.values()) {
+        FlatValidator.validate(
+                flat.getName(),
+                flat.getCoordinates(),
+                flat.getArea(),
+                flat.getView(),
+                flat.getNumberOfRooms(),
+                flat.getTimeToMetroByTransport(),
+                flat.getHouse()
+        );
+      }
+    } catch (SourceEmptyException e) {
+      storage = new LinkedHashMap<>();
+    }
+    catch (ValidationException | NullPointerException e) {
+      throw new Error("Source has invalid data");
+    }
+    info.put("type", "LinkedHashMap");
+    info.put("date", initializationDate.toString());
+    info.put("size", "0");
+
+    this.databaseManager = databaseManager;
+  }
 
   public FlatStorage() {
+    storage = new LinkedHashMap<>();
     info.put("type", "LinkedHashMap");
     info.put("date", initializationDate.toString());
     info.put("size", "0");
@@ -102,5 +141,16 @@ public class FlatStorage {
 
   public Flat get(int id) {
     return storage.get(id);
+  }
+
+  public void save() throws ValidationException {
+    if (databaseManager == null) {
+      throw new ValidationException("Database is not provided or not available");
+    }
+
+    Flats flats = new Flats();
+    flats.setFlats(storage);
+
+    databaseManager.save(flats);
   }
 }
