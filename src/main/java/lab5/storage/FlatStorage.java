@@ -3,6 +3,7 @@ package lab5.storage;
 import lab5.database.SourceEmptyException;
 import lab5.lib.ValidationException;
 import lab5.storage.marshalling_shapes.Flats;
+import lab5.utils.IDGenerator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -20,10 +21,12 @@ public class FlatStorage {
   private LinkedHashMap<Integer, Flat> storage;
   private Date initializationDate = new Date();
   private lab5.database.Manager<Flats> databaseManager;
+  private IDGenerator<Integer> generator;
 
-  public FlatStorage(lab5.database.Manager<Flats> databaseManager)
+  public FlatStorage(lab5.database.Manager<Flats> databaseManager, IDGenerator<Integer> generator)
           throws ValidationException {
     try {
+      this.generator = generator;
       storage = databaseManager.read().getFlats();
       for (Flat flat: storage.values()) {
         FlatValidator.validate(
@@ -49,7 +52,8 @@ public class FlatStorage {
     this.databaseManager = databaseManager;
   }
 
-  public FlatStorage() {
+  public FlatStorage(IDGenerator<Integer> generator) {
+    this.generator = generator;
     storage = new LinkedHashMap<>();
     info.put("type", "LinkedHashMap");
     info.put("date", initializationDate.toString());
@@ -152,5 +156,9 @@ public class FlatStorage {
     flats.setFlats(storage);
 
     databaseManager.save(flats);
+  }
+
+  public IDGenerator<Integer> getGenerator() {
+    return generator;
   }
 }

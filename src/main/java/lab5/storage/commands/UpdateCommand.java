@@ -20,13 +20,13 @@ public class UpdateCommand extends AbstractAddCommand {
                        String houseName,
                        Integer houseYear,
                        Coordinates coordinates) {
-    super(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
+    super(storage, name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
     this.id = id;
     this.storage = storage;
   }
 
   public UpdateCommand(FlatOptions options, FlatStorage storage, int id) {
-    super(options);
+    super(options, storage);
     this.id = id;
     this.storage = storage;
   }
@@ -35,7 +35,7 @@ public class UpdateCommand extends AbstractAddCommand {
     if (storage.get(id) == null) {
       throw new ValidationException("Space marine with specified id does not exist");
     }
-    Flat flat = this.generateFlat(() -> id);
+    Flat flat = this.generateFlat();
     storage.updateFlat(flat, id);
   }
 
