@@ -97,14 +97,29 @@ public class Console {
     System.out.println(line);
   }
 
+  /**
+   *
+   * @param line Calls Object.toString()
+   * @param consoleMode Show if current mode equals to provided console mode
+   */
+
   public void show(Object line, ConsoleMode consoleMode) {
     if (mode == consoleMode) show(line);
   }
 
+  /**
+   *
+   * @param lines Show line with line breaks
+   * @param consoleMode Show if current mode equals to provided console mode
+   */
   public void show(Object[] lines, ConsoleMode consoleMode) {
     if (mode == consoleMode) show(lines);
   }
 
+  /**
+   *
+   * @param lines Show lines with line breaks
+   */
   public void show(Object[] lines) {
     for (Object line : lines) {
       System.out.println(line);
