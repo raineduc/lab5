@@ -34,6 +34,10 @@ public class FlatOptions {
     this.coordinates = coordinates;
   }
 
+  public FlatOptions() {
+    super();
+  }
+
   public String getName() {
     return name;
   }
