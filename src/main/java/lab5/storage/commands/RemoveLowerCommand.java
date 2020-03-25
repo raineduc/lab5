@@ -12,21 +12,6 @@ public class RemoveLowerCommand extends AbstractAddCommand {
   private View view;
   private static String info = "удалить из коллекции все элементы, значение поля meleeWeapon которого эквивалентно заданному";
 
-  public RemoveLowerCommand(FlatStorage storage,
-                            String name,
-                            int area,
-                            Integer numberOfRooms,
-                            boolean balcony,
-                            double timeToMetroByTransport,
-                            View view,
-                            String houseName,
-                            Integer houseYear,
-                            Coordinates coordinates
-  ) {
-    super(storage, name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
-    this.storage = storage;
-  }
-
   public RemoveLowerCommand(FlatOptions options, FlatStorage storage) {
     super(options, storage);
     this.storage = storage;

@@ -133,46 +133,57 @@ public class CommandParser {
   }
 
   public FlatOptions parseElement() throws ValidationException, NoSuchElementException {
+    FlatOptions flatOptions = new FlatOptions();
+
     String name = this.<String>read(() -> {
       console.show("Type a name of flat", ConsoleMode.DIRECT_INPUT);
       return typeReader.readString(FlatValidator::validateName, "name");
     });
+    flatOptions.setName(name);
     boolean balcony = this.<Boolean>read(() -> {
       console.show("Does it have balcony?", ConsoleMode.DIRECT_INPUT);
       return typeReader.readBoolean((Boolean b) -> {
       }, "balcony");
     });
+    flatOptions.setBalcony(balcony);
     Integer numberOfRooms = this.<Integer>read(() -> {
       console.show("Type number of rooms", ConsoleMode.DIRECT_INPUT);
       return typeReader.readInteger(FlatValidator::validateNumberOfRooms, "numberOfRooms");
     });
+    flatOptions.setNumberOfRooms(numberOfRooms);
     double timeToMetroByTransport = this.<Double>read(() -> {
       console.show("How much time will it take to metro by transport?", ConsoleMode.DIRECT_INPUT);
       return typeReader.readDouble(FlatValidator::validateTimeToMetroByTransport, "timeToMetroByTransport");
     });
+    flatOptions.setTimeToMetroByTransport(timeToMetroByTransport);
     View view = this.<View>read(() -> {
       console.show("which view does it have? Choose one of these", ConsoleMode.DIRECT_INPUT);
       console.show(View.values(), ConsoleMode.DIRECT_INPUT);
       return typeReader.readEnum(View.class);
     });
+    flatOptions.setView(view);
     String houseName = this.<String>read(() -> {
       console.show("Type house's name", ConsoleMode.DIRECT_INPUT);
       return typeReader.readString(FlatValidator::validateHouseName, "houseName");
     });
+    flatOptions.setHouseName(name);
     Integer houseYear = this.<Integer>read(() -> {
       console.show("Type house's year", ConsoleMode.DIRECT_INPUT);
       return typeReader.readInteger(FlatValidator::validateHouseYear, "houseYear");
     });
+    flatOptions.setHouseYear(houseYear);
     int area = this.<Integer>read(() -> {
       console.show("Type area", ConsoleMode.DIRECT_INPUT);
       return typeReader.readInteger(FlatValidator::validateArea, "area");
     });
+    flatOptions.setArea(area);
     Coordinates coordinates = this.<Coordinates>read(() -> {
       console.show("Now type a position of the house", ConsoleMode.DIRECT_INPUT);
       return parseCoordinates();
     });
+    flatOptions.setCoordinates(coordinates);
 
-    return new FlatOptions(name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
+    return flatOptions;
   }
 
 

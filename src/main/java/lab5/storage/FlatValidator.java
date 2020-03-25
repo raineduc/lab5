@@ -19,6 +19,17 @@ public class FlatValidator {
     FlatValidator.validateTimeToMetroByTransport(timeToMetroByTransport);
     FlatValidator.validateHouse(house);
   }
+
+  public static void validate(FlatOptions options, House house) throws ValidationException, NullPointerException {
+    FlatValidator.validateName(options.getName());
+    FlatValidator.validateCoordinates(options.getCoordinates());
+    FlatValidator.validateArea(options.getArea());
+    FlatValidator.validateView(options.getView());
+    FlatValidator.validateNumberOfRooms(options.getNumberOfRooms());
+    FlatValidator.validateTimeToMetroByTransport(options.getTimeToMetroByTransport());
+    FlatValidator.validateHouse(house);
+  }
+
   public static void validateName(String name) throws ValidationException {
     if (name == null) {
       throw new ValidationException("Name must not be null");

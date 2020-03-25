@@ -2,6 +2,7 @@ package lab5.storage.jaxb_adapters;
 
 import lab5.storage.Coordinates;
 import lab5.storage.Flat;
+import lab5.storage.FlatOptions;
 import lab5.storage.marshalling_shapes.CoordinatesShape;
 import lab5.storage.marshalling_shapes.FlatShape;
 import lab5.storage.marshalling_shapes.FlatsShape;
@@ -39,17 +40,19 @@ public class FlatsAdapter extends XmlAdapter<FlatsShape, LinkedHashMap<Integer, 
   }
 
   public Flat createFlat(FlatShape flatShape) throws Exception {
-    return new Flat(flatShape.name,
-            flatShape.area,
-            flatShape.numberOfRooms,
-            flatShape.balcony,
-            flatShape.timeToMetroByTransport,
-            flatShape.view,
-            flatShape.house.name,
-            flatShape.house.year,
-            new Coordinates(flatShape.coordinates.x, flatShape.coordinates.y),
-            () -> flatShape.id
-    );
+    FlatOptions options = new FlatOptions()
+            .setName(flatShape.name)
+            .setArea(flatShape.area)
+            .setNumberOfRooms(flatShape.numberOfRooms)
+            .setBalcony(flatShape.balcony)
+            .setTimeToMetroByTransport(flatShape.timeToMetroByTransport)
+            .setView(flatShape.view)
+            .setHouseName(flatShape.house.name)
+            .setHouseYear(flatShape.house.year)
+            .setCoordinates(new Coordinates(flatShape.coordinates.x,
+                    flatShape.coordinates.y));
+
+    return new Flat(options, () -> flatShape.id);
   }
 
   public FlatShape createFilledShape(Flat flat) {
