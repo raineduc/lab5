@@ -16,7 +16,7 @@ public class Main {
     FlatStorage storage;
 
     if (args.length > 0) {
-      Path path = Path.of(args[0]);
+      Path path = Path.of(args[0].trim());
       try {
         XmlManager<Flats> manager = new XmlManager<>(path.toFile(),
                 Flats.class);
