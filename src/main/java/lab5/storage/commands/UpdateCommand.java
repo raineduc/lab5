@@ -5,25 +5,9 @@ import lab5.storage.*;
 
 public class UpdateCommand extends AbstractAddCommand {
   private static String info = "обновить значение элемента коллекции, id которого равен заданному";
-
   private FlatStorage storage;
   private int id;
 
-  public UpdateCommand(FlatStorage storage,
-                       int id,
-                       String name,
-                       int area,
-                       Integer numberOfRooms,
-                       boolean balcony,
-                       double timeToMetroByTransport,
-                       View view,
-                       String houseName,
-                       Integer houseYear,
-                       Coordinates coordinates) {
-    super(storage, name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
-    this.id = id;
-    this.storage = storage;
-  }
 
   public UpdateCommand(FlatOptions options, FlatStorage storage, int id) {
     super(options, storage);

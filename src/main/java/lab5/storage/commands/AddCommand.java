@@ -6,21 +6,6 @@ import lab5.storage.*;
 public class AddCommand extends AbstractAddCommand {
     private FlatStorage storage;
     private static String info = "добавить новый элемент в коллекцию";
-    public AddCommand(
-                      FlatStorage storage,
-                      String name,
-                      int area,
-                      Integer numberOfRooms,
-                      boolean balcony,
-                      double timeToMetroByTransport,
-                      View view,
-                      String houseName,
-                      Integer houseYear,
-                      Coordinates coordinates
-    ) {
-        super(storage, name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
-        this.storage = storage;
-    }
 
     public AddCommand(FlatOptions options, FlatStorage storage) {
       super(options, storage);

@@ -8,22 +8,6 @@ public class AddIfMinCommand extends AbstractAddCommand {
   private static String info = "добавить новый элемент в коллекцию, " +
           "если его значение меньше, чем у наименьшего элемента этой коллекции";
 
-  public AddIfMinCommand(
-          FlatStorage storage,
-          String name,
-          int area,
-          Integer numberOfRooms,
-          boolean balcony,
-          double timeToMetroByTransport,
-          View view,
-          String houseName,
-          Integer houseYear,
-          Coordinates coordinates
-  ) {
-    super(storage, name, area, numberOfRooms, balcony, timeToMetroByTransport, view, houseName, houseYear, coordinates);
-    this.storage = storage;
-  }
-
   public AddIfMinCommand(FlatOptions options, FlatStorage storage) {
     super(options, storage);
     this.storage = storage;

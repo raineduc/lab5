@@ -18,29 +18,11 @@ public abstract class AbstractAddCommand implements Command {
   private String houseName;
   private Integer houseYear;
   private FlatStorage storage;
+  private FlatOptions options;
 
-  public AbstractAddCommand(FlatStorage storage,
-                            String name,
-                            int area,
-                            Integer numberOfRooms,
-                            boolean balcony,
-                            double timeToMetroByTransport,
-                            View view,
-                            String houseName,
-                            Integer houseYear,
-                            Coordinates coordinates) {
-    this.name = name;
-    this.coordinates = coordinates;
-    this.view = view;
-    this.houseName = houseName;
-    this.houseYear = houseYear;
-    this.area = area;
-    this.numberOfRoms = numberOfRooms;
-    this.balcony = balcony;
-    this.timeToMetroByTransport = timeToMetroByTransport;
-  }
 
   public AbstractAddCommand(FlatOptions options, FlatStorage storage) {
+    this.options = options;
     this.storage = storage;
     this.name = options.name;
     this.coordinates = options.coordinates;
@@ -51,10 +33,6 @@ public abstract class AbstractAddCommand implements Command {
     this.numberOfRoms = options.numberOfRooms;
     this.balcony = options.balcony;
     this.timeToMetroByTransport = options.timeToMetroByTransport;
-  }
-
-  public House getHouse() {
-    return house;
   }
 
   public int getArea() {
@@ -71,14 +49,6 @@ public abstract class AbstractAddCommand implements Command {
 
   public View getView() {
     return view;
-  }
-
-  public Integer getNumberOfRoms() {
-    return numberOfRoms;
-  }
-
-  public boolean isBalcony() {
-    return balcony;
   }
 
   public double getTimeToMetroByTransport() {
