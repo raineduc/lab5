@@ -74,39 +74,48 @@ public class FlatOptions {
     return houseYear;
   }
 
-  public void setName(String name) {
+  public FlatOptions setName(String name) {
     this.name = name;
+    return this;
   }
 
-  public void setArea(int area) {
+  public FlatOptions setArea(int area) {
     this.area = area;
+    return this;
   }
 
-  public void setNumberOfRooms(Integer numberOfRooms) {
+  public FlatOptions setNumberOfRooms(Integer numberOfRooms) {
     this.numberOfRooms = numberOfRooms;
+    return this;
   }
 
-  public void setBalcony(boolean balcony) {
+  public FlatOptions setBalcony(boolean balcony) {
     this.balcony = balcony;
+    return this;
   }
 
-  public void setTimeToMetroByTransport(double timeToMetroByTransport) {
+  public FlatOptions setTimeToMetroByTransport(double timeToMetroByTransport) {
     this.timeToMetroByTransport = timeToMetroByTransport;
+    return this;
   }
 
-  public void setView(View view) {
+  public FlatOptions setView(View view) {
     this.view = view;
+    return this;
   }
 
-  public void setHouseName(String houseName) {
+  public FlatOptions setHouseName(String houseName) {
     this.houseName = houseName;
+    return this;
   }
 
-  public void setCoordinates(Coordinates coordinates) {
+  public FlatOptions setCoordinates(Coordinates coordinates) {
     this.coordinates = coordinates;
+    return this;
   }
 
-  public void setHouseYear(Integer houseYear) {
+  public FlatOptions setHouseYear(Integer houseYear) {
     this.houseYear = houseYear;
+    return this;
   }
 }
