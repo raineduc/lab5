@@ -11,7 +11,6 @@ public class FlatOptions {
   public View view;
   public String houseName;
   public Coordinates coordinates;
-  public IDGenerator<Integer> idGenerator;
   public Integer houseYear;
 
   public FlatOptions(String name,
@@ -67,10 +66,6 @@ public class FlatOptions {
     return coordinates;
   }
 
-  public IDGenerator<Integer> getIdGenerator() {
-    return idGenerator;
-  }
-
   public Integer getHouseYear() {
     return houseYear;
   }
@@ -105,10 +100,6 @@ public class FlatOptions {
 
   public void setCoordinates(Coordinates coordinates) {
     this.coordinates = coordinates;
-  }
-
-  public void setIdGenerator(IDGenerator<Integer> idGenerator) {
-    this.idGenerator = idGenerator;
   }
 
   public void setHouseYear(Integer houseYear) {
