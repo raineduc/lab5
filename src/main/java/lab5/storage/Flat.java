@@ -21,6 +21,7 @@ public class Flat implements Comparable<Flat>  {
   private double timeToMetroByTransport; //Значение поля должно быть больше 0
   private View view; //Поле может быть null
   private House house; //Поле не может быть null
+  private FlatOptions options;
 
   public Flat(String name,
               int area,
@@ -45,6 +46,13 @@ public class Flat implements Comparable<Flat>  {
     this.view = view;
     this.coordinates = coordinates;
     this.house = new House(houseName, houseYear);
+  }
+
+  public Flat(FlatOptions options, IDGenerator<Integer> idGenerator) throws ValidationException, NullPointerException {
+    this.id = idGenerator.generate();
+    this.house = new House(options.getHouseName(), options.getHouseYear());
+    FlatValidator.validate(options, house);
+    this.options = options;
   }
 
   public LocalDateTime getCreationDate() {
