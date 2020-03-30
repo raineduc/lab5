@@ -11,7 +11,6 @@ import lab5.ui.console.invokers.CountInvoker;
 import lab5.ui.console.invokers.GetInfoInvoker;
 import lab5.ui.console.invokers.ShowInvoker;
 import lab5.ui.console.invokers.SumOfTimeInvoker;
-import org.w3c.dom.ls.LSOutput;
 
 import static lab5.ui.console.Mnemonics.*;
 
@@ -28,17 +27,17 @@ public class CommandParser {
   private ConsoleTypeReader typeReader;
   private Scanner scanner;
   private GetInfoInvoker getInfoInvoker;
-  private FlatStorage storage;
+  private StorageManager storageManager;
   private Console console;
   private ShowInvoker showInvoker;
   private SumOfTimeInvoker sumOfTimeInvoker;
   private CountInvoker countInvoker;
   private HashMap<String, MnemonicDefinition> mnemonicDefinitions = new HashMap<>();
 
-  public CommandParser(Console console, FlatStorage storage) {
+  public CommandParser(Console console, StorageManager storageManager) {
     this.scanner = console.getScanner();
     this.typeReader = new ConsoleTypeReader(scanner, console.getMode());
-    this.storage = storage;
+    this.storageManager = storageManager;
     this.console = console;
     this.showInvoker = new ShowInvoker(console);
     this.getInfoInvoker = new GetInfoInvoker(console);
@@ -85,39 +84,39 @@ public class CommandParser {
         case HELP:
           return new HelpCommand(mnemonicDefinitions.values(), console);
         case INFO:
-          return new GetInfoCommand(storage, getInfoInvoker);
+          return new GetInfoCommand(storageManager, getInfoInvoker);
         case SHOW:
-          return new GetAllCommand(storage, showInvoker);
+          return new GetAllCommand(storageManager, showInvoker);
         case EXIT:
           return new ExitCommand(console);
         case REMOVE:
-          return new RemoveCommand(storage, Integer.parseInt(arguments[0]));
+          return new RemoveCommand(storageManager, Integer.parseInt(arguments[0]));
         case CLEAR:
-          return new ClearCommand(storage);
+          return new ClearCommand(storageManager);
         case GET_HISTORY:
           return new GetHistoryCommand(console);
         case SUM_OF_TIME:
-          return new SumOfTimeCommand(storage, sumOfTimeInvoker);
+          return new SumOfTimeCommand(storageManager, sumOfTimeInvoker);
         case COUNT:
-          return new CountByNumberOfRoomsCommand(storage, Integer.parseInt(arguments[0]), countInvoker);
+          return new CountByNumberOfRoomsCommand(storageManager, Integer.parseInt(arguments[0]), countInvoker);
         case PRINT_DESCENDING:
-          return new GetAllCommand(storage, showInvoker, true);
+          return new GetAllCommand(storageManager, showInvoker, true);
         case ADD:
-          return new AddCommand(this.parseElement(), storage);
+          return new AddCommand(storageManager, this.parseElement());
         case UPDATE:
           int id = Integer.parseInt(arguments[0].trim());
-          if (!storage.has(id)) {
+          if (!storageManager.getStorage().has(id)) {
             throw new ValidationException("Space marine with specified id does not exist");
           }
-          return new UpdateCommand(this.parseElement(), storage, id);
+          return new UpdateCommand(storageManager, this.parseElement(), id);
         case ADD_IF_MIN:
-          return new AddIfMinCommand(this.parseElement(), storage);
+          return new AddIfMinCommand(storageManager, this.parseElement());
         case REMOVE_LOWER:
-          return new RemoveLowerCommand(this.parseElement(), storage);
+          return new RemoveLowerCommand(storageManager, this.parseElement());
         case EXECUTE:
           return new ExecuteScriptCommand(console, Path.of(arguments[0]));
         case SAVE:
-          return new SaveCommand(storage);
+          return new SaveCommand(storageManager);
         default:
           throw new ValidationException("There is no such command");
       }

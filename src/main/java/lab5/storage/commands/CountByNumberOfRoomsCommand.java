@@ -1,24 +1,21 @@
 package lab5.storage.commands;
 
-import lab5.lib.Command;
-import lab5.storage.View;
-import lab5.lib.ValidationException;
+import lab5.storage.StorageManager;
 import lab5.storage.FlatStorage;
 
-public class CountByNumberOfRoomsCommand implements Command {
-  private final FlatStorage storage;
+public class CountByNumberOfRoomsCommand extends StorageCommand {
   private final Integer number;
   private final Invoker<Integer> invoker;
   private static String info = "вывести количество " +
           "элементов, значение поля numberOfRooms которых равно заданному";
-  public CountByNumberOfRoomsCommand(FlatStorage storage, Integer number, Invoker<Integer> invoker) {
+  public CountByNumberOfRoomsCommand(StorageManager manager, Integer number, Invoker<Integer> invoker) {
+    super(manager);
     this.invoker = invoker;
-    this.storage = storage;
     this.number = number;
   }
 
   @Override
-  public void execute() throws ValidationException, NullPointerException {
+  public void execute(FlatStorage storage) throws NullPointerException {
     int count = storage.countByNumberOfRooms(number);
     invoker.receive(count);
   }

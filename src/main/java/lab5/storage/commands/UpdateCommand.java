@@ -5,17 +5,15 @@ import lab5.storage.*;
 
 public class UpdateCommand extends AbstractAddCommand {
   private static String info = "обновить значение элемента коллекции, id которого равен заданному";
-  private FlatStorage storage;
   private int id;
 
 
-  public UpdateCommand(FlatOptions options, FlatStorage storage, int id) {
-    super(options, storage);
+  public UpdateCommand(StorageManager manager, FlatOptions options, int id) {
+    super(manager, options);
     this.id = id;
-    this.storage = storage;
   }
 
-  public void execute() throws ValidationException, NullPointerException {
+  public void execute(FlatStorage storage) throws ValidationException, NullPointerException {
     if (storage.get(id) == null) {
       throw new ValidationException("Space marine with specified id does not exist");
     }

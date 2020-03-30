@@ -1,35 +1,30 @@
 package lab5.storage.commands;
 
-import lab5.lib.Command;
 import lab5.storage.Flat;
 import lab5.lib.ValidationException;
 import lab5.storage.FlatStorage;
+import lab5.storage.StorageManager;
 
 import java.util.Collection;
-import java.util.Stack;
 
-public class GetAllCommand implements Command {
-  private FlatStorage storage;
+public class GetAllCommand extends StorageCommand {
   private Invoker<Collection<Flat>> invoker;
   private static String info = "Получить все элементы коллекции";
   private boolean isDescending;
-  public GetAllCommand(FlatStorage storage) {
-    this.storage = storage;
-  }
 
-  public GetAllCommand(FlatStorage storage, Invoker<Collection<Flat>> invoker) {
-    this.storage = storage;
+  public GetAllCommand(StorageManager manager, Invoker<Collection<Flat>> invoker) {
+    super(manager);
     this.invoker = invoker;
     this.isDescending = false;
   }
 
-  public GetAllCommand(FlatStorage storage, Invoker<Collection<Flat>> invoker, boolean isDescending) {
-    this.storage = storage;
+  public GetAllCommand(StorageManager manager, Invoker<Collection<Flat>> invoker, boolean isDescending) {
+    super(manager);
     this.invoker = invoker;
     this.isDescending = isDescending;
   }
 
-  public void execute() throws ValidationException, NullPointerException {
+  public void execute(FlatStorage storage) throws NullPointerException {
     Collection<Flat> flats = isDescending ? storage.getAllDescending() : storage.getAll();
     invoker.receive(flats);
   }
