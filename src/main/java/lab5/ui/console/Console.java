@@ -2,11 +2,10 @@ package lab5.ui.console;
 
 import lab5.lib.Command;
 import lab5.lib.ValidationException;
-import lab5.storage.Flat;
 import lab5.storage.FlatStorage;
+import lab5.storage.StorageManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,16 +19,14 @@ import java.util.*;
 public class Console {
   private Scanner scanner = new Scanner(System.in);
   private CommandHistory history = new CommandHistory();
-  private FlatStorage storage;
   private CommandParser parser;
   private ConsoleMode mode = ConsoleMode.DIRECT_INPUT;
   private ArrayList<String> commandResults = new ArrayList<>();
   private ArrayList<Path> paths = new ArrayList<>();
 
 
-  public Console(FlatStorage storage) {
-    this.storage = storage;
-    this.parser = new CommandParser(this, storage);
+  public Console(StorageManager manager) {
+    this.parser = new CommandParser(this, manager);
   }
 
   /**
@@ -124,10 +121,6 @@ public class Console {
     for (Object line : lines) {
       System.out.println(line);
     }
-  }
-
-  public void save(Collection<Flat> stack) {
-
   }
 
   public void executeCommand(@NotNull Map.Entry<MnemonicDefinition, Command> commandEntry) {

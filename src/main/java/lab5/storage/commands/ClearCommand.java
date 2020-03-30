@@ -1,17 +1,17 @@
 package lab5.storage.commands;
 
-import lab5.lib.Command;
 import lab5.lib.ValidationException;
 import lab5.storage.FlatStorage;
+import lab5.storage.StorageManager;
 
-public class ClearCommand implements Command {
-  private FlatStorage storage;
+public class ClearCommand extends StorageCommand {
   private static String info = "очистить коллекцию";
-  public ClearCommand(FlatStorage storage) {
-    this.storage = storage;
+
+  public ClearCommand(StorageManager manager) {
+    super(manager);
   }
 
-  public void execute() throws ValidationException, NullPointerException {
+  public void execute(FlatStorage storage) throws NullPointerException {
     storage.clear();
   }
 

@@ -1,18 +1,17 @@
 package lab5.storage.commands;
 
-import lab5.lib.Command;
 import lab5.lib.ValidationException;
 import lab5.storage.FlatStorage;
+import lab5.storage.StorageManager;
 
-public class SaveCommand implements Command {
-  private FlatStorage storage;
+public class SaveCommand extends StorageCommand {
   private static String info = "сохранить коллекцию в файл";
 
-  public SaveCommand(FlatStorage storage) {
-    this.storage = storage;
+  public SaveCommand(StorageManager manager) {
+    super(manager);
   }
 
-  public void execute() throws ValidationException {
+  public void execute(FlatStorage storage) throws ValidationException {
     storage.save();
   }
 

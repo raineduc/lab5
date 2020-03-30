@@ -4,6 +4,7 @@ import lab5.database.XmlManager;
 import lab5.lib.ValidationException;
 import lab5.storage.Flat;
 import lab5.storage.FlatStorage;
+import lab5.storage.LocalStorageManager;
 import lab5.storage.marshalling_shapes.Flats;
 import lab5.ui.console.Console;
 import lab5.utils.IntIDGenerator;
@@ -13,7 +14,7 @@ import java.util.LinkedHashMap;
 
 public class Main {
   public static void main(String[] args) {
-    FlatStorage storage;
+    LocalStorageManager storageManager;
 
     if (args.length > 0) {
       Path path = Path.of(args[0].trim());
@@ -21,19 +22,19 @@ public class Main {
         XmlManager<Flats> manager = new XmlManager<>(path.toFile(),
                 Flats.class);
         IntIDGenerator generator = new IntIDGenerator();
-        storage = new FlatStorage(manager, generator);
-        for (Flat flat: storage.getAll()) {
+        storageManager = new LocalStorageManager(manager, generator);
+        for (Flat flat: storageManager.getStorage().getAll()) {
           generator.addIDToBlackList(flat.getId());
         }
       } catch (ValidationException e) {
-        storage = null;
+        storageManager = null;
         System.out.println(e.getMessage());
         System.exit(1);
       }
     } else {
-      storage = new FlatStorage(new IntIDGenerator());
+      storageManager = new LocalStorageManager(new IntIDGenerator());
     }
-    Console console = new Console(storage);
+    Console console = new Console(storageManager);
     console.open();
   }
 }

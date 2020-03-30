@@ -4,18 +4,18 @@ import lab5.lib.Command;
 import lab5.lib.ValidationException;
 import lab5.storage.FlatStorage;
 import lab5.storage.FlatValidator;
+import lab5.storage.StorageManager;
 
-public class RemoveCommand implements Command {
+public class RemoveCommand extends StorageCommand {
   private int id;
-  private FlatStorage storage;
   private static String info = "удалить элемент из коллекции по его id";
-  public RemoveCommand(FlatStorage storage, int id) {
-    this.storage = storage;
+  public RemoveCommand(StorageManager manager, int id) {
+    super(manager);
     this.id = id;
   }
 
   @Override
-  public void execute() throws ValidationException, NullPointerException {
+  public void execute(FlatStorage storage) throws ValidationException, NullPointerException {
     FlatValidator.validateID(id);
     storage.removeFlat(id);
   }
