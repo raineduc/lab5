@@ -7,10 +7,7 @@ import lab5.storage.*;
 import lab5.storage.commands.*;
 import lab5.storage.commands.SaveCommand;
 import lab5.ui.console.commands.*;
-import lab5.ui.console.invokers.CountInvoker;
-import lab5.ui.console.invokers.GetInfoInvoker;
-import lab5.ui.console.invokers.ShowInvoker;
-import lab5.ui.console.invokers.SumOfTimeInvoker;
+import lab5.ui.console.invokers.*;
 
 import static lab5.ui.console.Mnemonics.*;
 
@@ -32,6 +29,7 @@ public class CommandParser {
   private ShowInvoker showInvoker;
   private SumOfTimeInvoker sumOfTimeInvoker;
   private CountInvoker countInvoker;
+  private HasElementInvoker hasElementInvoker;
   private HashMap<String, MnemonicDefinition> mnemonicDefinitions = new HashMap<>();
 
   public CommandParser(Console console, StorageManager storageManager) {
@@ -43,6 +41,7 @@ public class CommandParser {
     this.getInfoInvoker = new GetInfoInvoker(console);
     this.sumOfTimeInvoker = new SumOfTimeInvoker(console);
     this.countInvoker = new CountInvoker(console);
+    this.hasElementInvoker = new HasElementInvoker();
     this.createMnemonics();
   }
 
@@ -105,7 +104,10 @@ public class CommandParser {
           return new AddCommand(storageManager, this.parseElement());
         case UPDATE:
           int id = Integer.parseInt(arguments[0].trim());
-          if (!storageManager.getStorage().has(id)) {
+
+          storageManager.handleCommand(new HasElementCommand(storageManager, id, hasElementInvoker));
+
+          if (!hasElementInvoker.getResult()) {
             throw new ValidationException("Space marine with specified id does not exist");
           }
           return new UpdateCommand(storageManager, this.parseElement(), id);

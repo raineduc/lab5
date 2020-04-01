@@ -124,13 +124,19 @@ public class Console {
   }
 
   public void executeCommand(@NotNull Map.Entry<MnemonicDefinition, Command> commandEntry) {
+    executeCommand(commandEntry, true);
+  }
+
+  public void executeCommand(@NotNull Map.Entry<MnemonicDefinition, Command> commandEntry, boolean shouldBeStored) {
     ConsoleMode currentMode = mode;
     Command command = commandEntry.getValue();
     MnemonicDefinition definition = commandEntry.getKey();
 
     try {
       command.execute();
-      history.push(definition.getMnemonic());
+      if (shouldBeStored) {
+        history.push(definition.getMnemonic());
+      }
       if (commandResults != null) {
         for (String line: commandResults) show(mode == currentMode ? "  " + line : line);
       }
