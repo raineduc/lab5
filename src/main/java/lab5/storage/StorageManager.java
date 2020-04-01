@@ -7,5 +7,4 @@ import lab5.utils.IDGenerator;
 public interface StorageManager {
   void handleCommand(StorageCommand command) throws ValidationException;
   IDGenerator<Integer> getIdGenerator();
-  FlatStorage getStorage();
 }

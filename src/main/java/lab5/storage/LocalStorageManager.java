@@ -27,8 +27,4 @@ public class LocalStorageManager implements StorageManager {
   public void handleCommand(StorageCommand command) throws ValidationException {
     command.execute(storage);
   }
-
-  public FlatStorage getStorage() {
-    return storage;
-  }
 }
