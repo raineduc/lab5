@@ -3,3 +3,5 @@
 out/
 tests/
 target/
+*/**/target/
+*/**/*.iml
